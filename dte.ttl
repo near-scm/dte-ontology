@@ -1,0 +1,2534 @@
+@prefix : <http://www.near.flights/ontologies/dte> .
+@prefix owl: <http://www.w3.org/2002/07/owl#> .
+@prefix rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#> .
+@prefix xml: <http://www.w3.org/XML/1998/namespace> .
+@prefix xsd: <http://www.w3.org/2001/XMLSchema#> .
+@prefix rdfs: <http://www.w3.org/2000/01/rdf-schema#> .
+@prefix skos: <http://www.w3.org/2004/02/skos/core#> .
+@prefix terms: <http://purl.org/dc/terms/> .
+@prefix d3fend: <http://d3fend.mitre.org/ontologies/d3fend.owl#> .
+@base <http://www.near.flights/ontologies/dte> .
+
+<http://www.near.flights/ontologies/dte> rdf:type owl:Ontology ;
+                                          owl:versionIRI <http://www.near.flights/ontologies/dte/0.1.0> ;
+                                          owl:imports <http://d3fend.mitre.org/ontologies/d3fend/0.12.0-BETA-1/d3fend.owl> .
+
+#################################################################
+#    Classes
+#################################################################
+
+###  http://d3fend.mitre.org/ontologies/d3fend.owl#T1021.004
+d3fend:T1021.004 rdfs:subClassOf :ApplicationLayerProtocol .
+
+
+###  http://d3fend.mitre.org/ontologies/d3fend.owl#T1071.004
+d3fend:T1071.004 rdfs:subClassOf :ApplicationLayerProtocol .
+
+
+###  http://www.near.flights/ontologies/dte#AES
+:AES rdf:type owl:Class ;
+     rdfs:subClassOf :CipherSuites .
+
+
+###  http://www.near.flights/ontologies/dte#AIXM
+:AIXM rdf:type owl:Class ;
+      rdfs:subClassOf :XML .
+
+
+###  http://www.near.flights/ontologies/dte#AMQP
+:AMQP rdf:type owl:Class ;
+      rdfs:subClassOf :ApplicationLayerProtocol ,
+                      [ rdf:type owl:Restriction ;
+                        owl:onProperty d3fend:uses ;
+                        owl:someValuesFrom :TCP
+                      ] ;
+      rdfs:isDefinedBy "https://www.rabbitmq.com/protocol.html" .
+
+
+###  http://www.near.flights/ontologies/dte#AccessControlList
+:AccessControlList rdf:type owl:Class ;
+                   rdfs:subClassOf :UserAuthorization ,
+                                   [ rdf:type owl:Restriction ;
+                                     owl:onProperty d3fend:authorizes ;
+                                     owl:someValuesFrom :Account
+                                   ] ;
+                   terms:description "A mechanism that implements access control for a system resource by enumerating the identities of the system entities that are permitted to access the resources." ;
+                   rdfs:isDefinedBy "https://csrc.nist.gov/glossary/term/access_control_list" .
+
+
+###  http://www.near.flights/ontologies/dte#Account
+:Account rdf:type owl:Class ;
+         rdfs:subClassOf :UserAuthorization ,
+                         [ rdf:type owl:Restriction ;
+                           owl:onProperty d3fend:may-run ;
+                           owl:someValuesFrom :Software
+                         ] ,
+                         [ rdf:type owl:Restriction ;
+                           owl:onProperty d3fend:uses ;
+                           owl:someValuesFrom :Account
+                         ] .
+
+
+###  http://www.near.flights/ontologies/dte#AccountPermissions
+:AccountPermissions rdf:type owl:Class ;
+                    rdfs:subClassOf :UserAuthorization ,
+                                    [ rdf:type owl:Restriction ;
+                                      owl:onProperty d3fend:authorizes ;
+                                      owl:someValuesFrom :Account
+                                    ] ;
+                    owl:disjointWith :AccountPolicy .
+
+
+###  http://www.near.flights/ontologies/dte#AccountPolicy
+:AccountPolicy rdf:type owl:Class ;
+               rdfs:subClassOf :UserAuthorization ,
+                               [ rdf:type owl:Restriction ;
+                                 owl:onProperty d3fend:may-be-contained-by ;
+                                 owl:someValuesFrom :AccessControlList
+                               ] ,
+                               [ rdf:type owl:Restriction ;
+                                 owl:onProperty d3fend:may-contain ;
+                                 owl:someValuesFrom :AccountPermissions
+                               ] ,
+                               [ rdf:type owl:Restriction ;
+                                 owl:onProperty d3fend:may-contain ;
+                                 owl:someValuesFrom :AccountRoles
+                               ] .
+
+
+###  http://www.near.flights/ontologies/dte#AccountRoles
+:AccountRoles rdf:type owl:Class ;
+              rdfs:subClassOf :UserAuthorization ,
+                              [ rdf:type owl:Restriction ;
+                                owl:onProperty d3fend:authorizes ;
+                                owl:someValuesFrom :Account
+                              ] .
+
+
+###  http://www.near.flights/ontologies/dte#ActiveMQ
+:ActiveMQ rdf:type owl:Class ;
+          rdfs:subClassOf :ApplicationLayerProtocol ;
+          rdfs:isDefinedBy "https://en.wikipedia.org/wiki/Apache_ActiveMQ" .
+
+
+###  http://www.near.flights/ontologies/dte#ActiveSession
+:ActiveSession rdf:type owl:Class ;
+               rdfs:subClassOf :NetworkDescriptor ,
+                               [ rdf:type owl:Restriction ;
+                                 owl:onProperty d3fend:contains ;
+                                 owl:someValuesFrom :RoutableAddress
+                               ] .
+
+
+###  http://www.near.flights/ontologies/dte#AdministratorAccount
+:AdministratorAccount rdf:type owl:Class ;
+                      rdfs:subClassOf :PrivilegedAccount .
+
+
+###  http://www.near.flights/ontologies/dte#AndroidOS
+:AndroidOS rdf:type owl:Class ;
+           rdfs:subClassOf :OperatingSystem .
+
+
+###  http://www.near.flights/ontologies/dte#AndroidPhone
+:AndroidPhone rdf:type owl:Class ;
+              rdfs:subClassOf :SmartPhone ,
+                              [ rdf:type owl:Restriction ;
+                                owl:onProperty d3fend:uses ;
+                                owl:someValuesFrom :AndroidOS
+                              ] .
+
+
+###  http://www.near.flights/ontologies/dte#AndroidTablet
+:AndroidTablet rdf:type owl:Class ;
+               rdfs:subClassOf :Tablet ,
+                               [ rdf:type owl:Restriction ;
+                                 owl:onProperty d3fend:uses ;
+                                 owl:someValuesFrom :AndroidOS
+                               ] .
+
+
+###  http://www.near.flights/ontologies/dte#ApacheLicense
+:ApacheLicense rdf:type owl:Class ;
+               rdfs:subClassOf :PermissiveSoftwareLicense .
+
+
+###  http://www.near.flights/ontologies/dte#Application
+:Application rdf:type owl:Class ;
+             rdfs:subClassOf :Software .
+
+
+###  http://www.near.flights/ontologies/dte#ApplicationLayerProtocol
+:ApplicationLayerProtocol rdf:type owl:Class ;
+                          rdfs:subClassOf :Protocol .
+
+
+###  http://www.near.flights/ontologies/dte#ApplicationSecurity
+:ApplicationSecurity rdf:type owl:Class ;
+                     rdfs:subClassOf :SecurityMeasure .
+
+
+###  http://www.near.flights/ontologies/dte#Arp
+:Arp rdf:type owl:Class ;
+     rdfs:subClassOf :ApplicationLayerProtocol ;
+     rdfs:isDefinedBy "https://datatracker.ietf.org/doc/html/rfc826" .
+
+
+###  http://www.near.flights/ontologies/dte#BLAKE2
+:BLAKE2 rdf:type owl:Class ;
+        rdfs:subClassOf :HashValue ;
+        rdfs:isDefinedBy "https://datatracker.ietf.org/doc/html/rfc7693" .
+
+
+###  http://www.near.flights/ontologies/dte#BLAKE3
+:BLAKE3 rdf:type owl:Class ;
+        rdfs:subClassOf :HashValue .
+
+
+###  http://www.near.flights/ontologies/dte#BSD
+:BSD rdf:type owl:Class ;
+     rdfs:subClassOf :OperatingSystem .
+
+
+###  http://www.near.flights/ontologies/dte#BSDLicense
+:BSDLicense rdf:type owl:Class ;
+            rdfs:subClassOf :PermissiveSoftwareLicense .
+
+
+###  http://www.near.flights/ontologies/dte#BandwidthUsage
+:BandwidthUsage rdf:type owl:Class ;
+                rdfs:subClassOf :NetworkActivity .
+
+
+###  http://www.near.flights/ontologies/dte#Biometrics
+:Biometrics rdf:type owl:Class ;
+            rdfs:subClassOf :UserAuthentication .
+
+
+###  http://www.near.flights/ontologies/dte#BuildIdentifier
+:BuildIdentifier rdf:type owl:Class ;
+                 rdfs:subClassOf :Data ,
+                                 [ rdf:type owl:Restriction ;
+                                   owl:onProperty d3fend:identifies ;
+                                   owl:someValuesFrom :Software
+                                 ] .
+
+
+###  http://www.near.flights/ontologies/dte#CONNECT
+:CONNECT rdf:type owl:Class ;
+         rdfs:subClassOf :HttpRequestMethod .
+
+
+###  http://www.near.flights/ontologies/dte#CVE
+:CVE rdf:type owl:Class ;
+     rdfs:subClassOf :SecurityMeasure .
+
+
+###  http://www.near.flights/ontologies/dte#CVE-2004-2761
+:CVE-2004-2761 rdf:type owl:Class ;
+               rdfs:subClassOf :CVE ;
+               rdfs:isDefinedBy "https://www.cvedetails.com/cve/CVE-2004-2761/" .
+
+
+###  http://www.near.flights/ontologies/dte#CVE-2020-13849
+:CVE-2020-13849 rdf:type owl:Class ;
+                rdfs:subClassOf :CVE ;
+                terms:description "The MQTT protocol 3.1.1 requires a server to set a timeout value of 1.5 times the Keep-Alive value specified by a client, which allows remote attackers to cause a denial of service (loss of the ability to establish new connections), as demonstrated by SlowITe." ;
+                rdfs:isDefinedBy "https://cve.mitre.org/cgi-bin/cvename.cgi?name=2020-13849" .
+
+
+###  http://www.near.flights/ontologies/dte#CellularModule
+:CellularModule rdf:type owl:Class ;
+                rdfs:subClassOf :RadioModule ,
+                                [ rdf:type owl:Restriction ;
+                                  owl:onProperty d3fend:uses ;
+                                  owl:someValuesFrom :CellularNetworkCommunication
+                                ] .
+
+
+###  http://www.near.flights/ontologies/dte#CellularNetworkCommunication
+:CellularNetworkCommunication rdf:type owl:Class ;
+                              rdfs:subClassOf :WirelessCommunication .
+
+
+###  http://www.near.flights/ontologies/dte#CertificateAuthority
+:CertificateAuthority rdf:type owl:Class ;
+                      rdfs:subClassOf :SecurityMeasure .
+
+
+###  http://www.near.flights/ontologies/dte#CipherSuites
+:CipherSuites rdf:type owl:Class ;
+              rdfs:subClassOf :ApplicationSecurity .
+
+
+###  http://www.near.flights/ontologies/dte#CommonPublicLicense
+:CommonPublicLicense rdf:type owl:Class ;
+                     rdfs:subClassOf :Copyleft .
+
+
+###  http://www.near.flights/ontologies/dte#Computer
+:Computer rdf:type owl:Class ;
+          rdfs:subClassOf :PhysicalDevice ,
+                          [ rdf:type owl:Restriction ;
+                            owl:onProperty d3fend:may-contain ;
+                            owl:someValuesFrom :PhysicalComponent
+                          ] ,
+                          [ rdf:type owl:Restriction ;
+                            owl:onProperty d3fend:uses ;
+                            owl:someValuesFrom :OperatingSystem
+                          ] .
+
+
+###  http://www.near.flights/ontologies/dte#ComputerKeyboard
+:ComputerKeyboard rdf:type owl:Class ;
+                  rdfs:subClassOf :HardwareInterfaceDevice .
+
+
+###  http://www.near.flights/ontologies/dte#ComputerMouse
+:ComputerMouse rdf:type owl:Class ;
+               rdfs:subClassOf :HardwareInterfaceDevice .
+
+
+###  http://www.near.flights/ontologies/dte#Copyleft
+:Copyleft rdf:type owl:Class ;
+          rdfs:subClassOf :SoftwareLicense .
+
+
+###  http://www.near.flights/ontologies/dte#CreativeCommonLicense
+:CreativeCommonLicense rdf:type owl:Class ;
+                       rdfs:subClassOf :Copyleft .
+
+
+###  http://www.near.flights/ontologies/dte#DCCP
+:DCCP rdf:type owl:Class ;
+      rdfs:subClassOf :TransportLayerProtocol .
+
+
+###  http://www.near.flights/ontologies/dte#DELETE
+:DELETE rdf:type owl:Class ;
+        rdfs:subClassOf :HttpRequestMethod .
+
+
+###  http://www.near.flights/ontologies/dte#DES
+:DES rdf:type owl:Class ;
+     rdfs:subClassOf :CipherSuites .
+
+
+###  http://www.near.flights/ontologies/dte#DSA
+:DSA rdf:type owl:Class ;
+     rdfs:subClassOf :CipherSuites .
+
+
+###  http://www.near.flights/ontologies/dte#DTEThing
+:DTEThing rdf:type owl:Class .
+
+
+###  http://www.near.flights/ontologies/dte#Darwin
+:Darwin rdf:type owl:Class ;
+        rdfs:subClassOf :BSD ;
+        owl:disjointWith :OpenBSD .
+
+
+###  http://www.near.flights/ontologies/dte#Data
+:Data rdf:type owl:Class ;
+      rdfs:subClassOf :Digital .
+
+
+###  http://www.near.flights/ontologies/dte#DataAuthorization
+:DataAuthorization rdf:type owl:Class ;
+                   rdfs:subClassOf :SoftwareIntegrity .
+
+
+###  http://www.near.flights/ontologies/dte#DataRepresentation
+:DataRepresentation rdf:type owl:Class ;
+                    rdfs:subClassOf :Data .
+
+
+###  http://www.near.flights/ontologies/dte#DatabaseServer
+:DatabaseServer rdf:type owl:Class ;
+                rdfs:subClassOf :ServerSoftware ,
+                                [ rdf:type owl:Restriction ;
+                                  owl:onProperty d3fend:may-modify ;
+                                  owl:someValuesFrom :Document
+                                ] .
+
+
+###  http://www.near.flights/ontologies/dte#Desktop
+:Desktop rdf:type owl:Class ;
+         rdfs:subClassOf :Computer ,
+                         [ rdf:type owl:Restriction ;
+                           owl:onProperty d3fend:may-contain ;
+                           owl:someValuesFrom :PhysicalComponent
+                         ] .
+
+
+###  http://www.near.flights/ontologies/dte#Diffie-Hellman
+:Diffie-Hellman rdf:type owl:Class ;
+                rdfs:subClassOf :KeyExchangeAlgorithms .
+
+
+###  http://www.near.flights/ontologies/dte#Digital
+:Digital rdf:type owl:Class ;
+         rdfs:subClassOf :DTEThing .
+
+
+###  http://www.near.flights/ontologies/dte#DigitalCertificate
+:DigitalCertificate rdf:type owl:Class ;
+                    rdfs:subClassOf :SoftwareIntegrity ,
+                                    [ rdf:type owl:Restriction ;
+                                      owl:onProperty d3fend:contains ;
+                                      owl:someValuesFrom :Encryption
+                                    ] .
+
+
+###  http://www.near.flights/ontologies/dte#Document
+:Document rdf:type owl:Class ;
+          rdfs:subClassOf :Data .
+
+
+###  http://www.near.flights/ontologies/dte#ECDH
+:ECDH rdf:type owl:Class ;
+      rdfs:subClassOf :KeyExchangeAlgorithms .
+
+
+###  http://www.near.flights/ontologies/dte#ECDSA
+:ECDSA rdf:type owl:Class ;
+       rdfs:subClassOf :CipherSuites .
+
+
+###  http://www.near.flights/ontologies/dte#ECN
+:ECN rdf:type owl:Class ;
+     rdfs:subClassOf :InternetLayerProtocol .
+
+
+###  http://www.near.flights/ontologies/dte#EclipsePublicLicense
+:EclipsePublicLicense rdf:type owl:Class ;
+                      rdfs:subClassOf :Copyleft .
+
+
+###  http://www.near.flights/ontologies/dte#Encryption
+:Encryption rdf:type owl:Class ;
+            rdfs:subClassOf :SoftwareIntegrity ,
+                            [ rdf:type owl:Restriction ;
+                              owl:onProperty d3fend:encrypts ;
+                              owl:someValuesFrom :Data
+                            ] .
+
+
+###  http://www.near.flights/ontologies/dte#EthernetInterfaceDevice
+:EthernetInterfaceDevice rdf:type owl:Class ;
+                         rdfs:subClassOf :NetworkInterfaceDevice .
+
+
+###  http://www.near.flights/ontologies/dte#ExternalHardDrive
+:ExternalHardDrive rdf:type owl:Class ;
+                   rdfs:subClassOf :RemovableMediaDevice ;
+                   owl:disjointWith :FlashDrive .
+
+
+###  http://www.near.flights/ontologies/dte#FIXM
+:FIXM rdf:type owl:Class ;
+      rdfs:subClassOf :XML .
+
+
+###  http://www.near.flights/ontologies/dte#FTP
+:FTP rdf:type owl:Class ;
+     rdfs:subClassOf :ApplicationLayerProtocol ;
+     rdfs:isDefinedBy "https://www.ietf.org/rfc/rfc959.txt" .
+
+
+###  http://www.near.flights/ontologies/dte#FiberOpticEthernetInterfaceDevice
+:FiberOpticEthernetInterfaceDevice rdf:type owl:Class ;
+                                   rdfs:subClassOf :EthernetInterfaceDevice .
+
+
+###  http://www.near.flights/ontologies/dte#FileManagementServer
+:FileManagementServer rdf:type owl:Class ;
+                      rdfs:subClassOf :ServerSoftware ,
+                                      [ rdf:type owl:Restriction ;
+                                        owl:onProperty d3fend:may-modify ;
+                                        owl:someValuesFrom :Document
+                                      ] .
+
+
+###  http://www.near.flights/ontologies/dte#FixedLocation
+:FixedLocation rdf:type owl:Class ;
+               rdfs:subClassOf :UserDeviceLocation ;
+               owl:disjointWith :MovingLocation .
+
+
+###  http://www.near.flights/ontologies/dte#FlashDrive
+:FlashDrive rdf:type owl:Class ;
+            rdfs:subClassOf :RemovableMediaDevice .
+
+
+###  http://www.near.flights/ontologies/dte#FreeBSD
+:FreeBSD rdf:type owl:Class ;
+         rdfs:subClassOf :BSD .
+
+
+###  http://www.near.flights/ontologies/dte#FreeRTOS
+:FreeRTOS rdf:type owl:Class ;
+          rdfs:subClassOf :RealTimeOperatingSystem .
+
+
+###  http://www.near.flights/ontologies/dte#FtpServer
+:FtpServer rdf:type owl:Class ;
+           rdfs:subClassOf :ServerSoftware ,
+                           [ rdf:type owl:Restriction ;
+                             owl:onProperty d3fend:may-modify ;
+                             owl:someValuesFrom :Document
+                           ] .
+
+
+###  http://www.near.flights/ontologies/dte#GET
+:GET rdf:type owl:Class ;
+     rdfs:subClassOf :HttpRequestMethod .
+
+
+###  http://www.near.flights/ontologies/dte#GML
+:GML rdf:type owl:Class ;
+     rdfs:subClassOf :XML .
+
+
+###  http://www.near.flights/ontologies/dte#GPL
+:GPL rdf:type owl:Class ;
+     rdfs:subClassOf :Copyleft .
+
+
+###  http://www.near.flights/ontologies/dte#GPLv1
+:GPLv1 rdf:type owl:Class ;
+       rdfs:subClassOf :GPL .
+
+
+###  http://www.near.flights/ontologies/dte#GPLv2
+:GPLv2 rdf:type owl:Class ;
+       rdfs:subClassOf :GPL .
+
+
+###  http://www.near.flights/ontologies/dte#GPLv3
+:GPLv3 rdf:type owl:Class ;
+       rdfs:subClassOf :GPL .
+
+
+###  http://www.near.flights/ontologies/dte#GPSModule
+:GPSModule rdf:type owl:Class ;
+           rdfs:subClassOf :RadioModule .
+
+
+###  http://www.near.flights/ontologies/dte#GraphicalApplication
+:GraphicalApplication rdf:type owl:Class ;
+                      rdfs:subClassOf :Application .
+
+
+###  http://www.near.flights/ontologies/dte#GuestAccount
+:GuestAccount rdf:type owl:Class ;
+              rdfs:subClassOf :Account .
+
+
+###  http://www.near.flights/ontologies/dte#HEAD
+:HEAD rdf:type owl:Class ;
+      rdfs:subClassOf :HttpRequestMethod .
+
+
+###  http://www.near.flights/ontologies/dte#HTTP
+:HTTP rdf:type owl:Class ;
+      rdfs:subClassOf :ApplicationLayerProtocol .
+
+
+###  http://www.near.flights/ontologies/dte#HTTPS
+:HTTPS rdf:type owl:Class ;
+       rdfs:subClassOf :HTTP ,
+                       [ rdf:type owl:Restriction ;
+                         owl:onProperty d3fend:contains ;
+                         owl:someValuesFrom :Unenctypted_HTTP
+                       ] ,
+                       [ rdf:type owl:Restriction ;
+                         owl:onProperty d3fend:implements ;
+                         owl:someValuesFrom d3fend:MessageEncryption
+                       ] .
+
+
+###  http://www.near.flights/ontologies/dte#HardwareInterfaceDevice
+:HardwareInterfaceDevice rdf:type owl:Class ;
+                         rdfs:subClassOf :RemovableDevice ;
+                         owl:disjointWith :RemovableMediaDevice .
+
+
+###  http://www.near.flights/ontologies/dte#HashValue
+:HashValue rdf:type owl:Class ;
+           rdfs:subClassOf :SoftwareIntegrity .
+
+
+###  http://www.near.flights/ontologies/dte#Hostname
+:Hostname rdf:type owl:Class ;
+          rdfs:subClassOf :RoutableAddress ,
+                          [ rdf:type owl:Restriction ;
+                            owl:onProperty d3fend:identifies ;
+                            owl:someValuesFrom :IpAddress
+                          ] .
+
+
+###  http://www.near.flights/ontologies/dte#HttpRequestMethod
+:HttpRequestMethod rdf:type owl:Class ;
+                   rdfs:subClassOf :ProtocolDescriptor ;
+                   d3fend:definition """https://developer.mozilla.org/en-US/docs/Web/HTTP/Methods
+
+HTTP defines a set of request methods to indicate the desired action to be performed for a given resource. Although they can also be nouns, these request methods are sometimes referred to as HTTP verbs. Each of them implements a different semantic, but some common features are shared by a group of them: e.g. a request method can be safe, idempotent, or cacheable.""" .
+
+
+###  http://www.near.flights/ontologies/dte#IBMPublicLicense
+:IBMPublicLicense rdf:type owl:Class ;
+                  rdfs:subClassOf :Copyleft .
+
+
+###  http://www.near.flights/ontologies/dte#IBM_i
+:IBM_i rdf:type owl:Class ;
+       rdfs:subClassOf :OperatingSystem .
+
+
+###  http://www.near.flights/ontologies/dte#ICMP
+:ICMP rdf:type owl:Class ;
+      rdfs:subClassOf :InternetLayerProtocol .
+
+
+###  http://www.near.flights/ontologies/dte#ICMPv6
+:ICMPv6 rdf:type owl:Class ;
+        rdfs:subClassOf :ICMP .
+
+
+###  http://www.near.flights/ontologies/dte#IEEE802.11
+:IEEE802.11 rdf:type owl:Class ;
+            rdfs:subClassOf :WirelessCommunication .
+
+
+###  http://www.near.flights/ontologies/dte#IEEE802.11-1997
+:IEEE802.11-1997 rdf:type owl:Class ;
+                 rdfs:subClassOf :IEEE802.11 .
+
+
+###  http://www.near.flights/ontologies/dte#IEEE802.11a
+:IEEE802.11a rdf:type owl:Class ;
+             rdfs:subClassOf :IEEE802.11 .
+
+
+###  http://www.near.flights/ontologies/dte#IEEE802.11ac
+:IEEE802.11ac rdf:type owl:Class ;
+              rdfs:subClassOf :IEEE802.11 .
+
+
+###  http://www.near.flights/ontologies/dte#IEEE802.11ad
+:IEEE802.11ad rdf:type owl:Class ;
+              rdfs:subClassOf :IEEE802.11 .
+
+
+###  http://www.near.flights/ontologies/dte#IEEE802.11af
+:IEEE802.11af rdf:type owl:Class ;
+              rdfs:subClassOf :IEEE802.11 .
+
+
+###  http://www.near.flights/ontologies/dte#IEEE802.11aj
+:IEEE802.11aj rdf:type owl:Class ;
+              rdfs:subClassOf :IEEE802.11 .
+
+
+###  http://www.near.flights/ontologies/dte#IEEE802.11ax
+:IEEE802.11ax rdf:type owl:Class ;
+              rdfs:subClassOf :IEEE802.11 .
+
+
+###  http://www.near.flights/ontologies/dte#IEEE802.11ay
+:IEEE802.11ay rdf:type owl:Class ;
+              rdfs:subClassOf :IEEE802.11 .
+
+
+###  http://www.near.flights/ontologies/dte#IEEE802.11b
+:IEEE802.11b rdf:type owl:Class ;
+             rdfs:subClassOf :IEEE802.11 .
+
+
+###  http://www.near.flights/ontologies/dte#IEEE802.11bb
+:IEEE802.11bb rdf:type owl:Class ;
+              rdfs:subClassOf :IEEE802.11 .
+
+
+###  http://www.near.flights/ontologies/dte#IEEE802.11bd
+:IEEE802.11bd rdf:type owl:Class ;
+              rdfs:subClassOf :IEEE802.11 .
+
+
+###  http://www.near.flights/ontologies/dte#IEEE802.11be
+:IEEE802.11be rdf:type owl:Class ;
+              rdfs:subClassOf :IEEE802.11 .
+
+
+###  http://www.near.flights/ontologies/dte#IEEE802.11g
+:IEEE802.11g rdf:type owl:Class ;
+             rdfs:subClassOf :IEEE802.11 .
+
+
+###  http://www.near.flights/ontologies/dte#IEEE802.11j
+:IEEE802.11j rdf:type owl:Class ;
+             rdfs:subClassOf :IEEE802.11 .
+
+
+###  http://www.near.flights/ontologies/dte#IEEE802.11n
+:IEEE802.11n rdf:type owl:Class ;
+             rdfs:subClassOf :IEEE802.11 .
+
+
+###  http://www.near.flights/ontologies/dte#IEEE802.11p
+:IEEE802.11p rdf:type owl:Class ;
+             rdfs:subClassOf :IEEE802.11 .
+
+
+###  http://www.near.flights/ontologies/dte#IEEE802.11y
+:IEEE802.11y rdf:type owl:Class ;
+             rdfs:subClassOf :IEEE802.11 .
+
+
+###  http://www.near.flights/ontologies/dte#IGMP
+:IGMP rdf:type owl:Class ;
+      rdfs:subClassOf :InternetLayerProtocol .
+
+
+###  http://www.near.flights/ontologies/dte#IMAP
+:IMAP rdf:type owl:Class ;
+      rdfs:subClassOf :MailProtocol ;
+      rdfs:isDefinedBy "https://datatracker.ietf.org/doc/html/rfc9051" .
+
+
+###  http://www.near.flights/ontologies/dte#IPsec
+:IPsec rdf:type owl:Class ;
+       rdfs:subClassOf :InternetLayerProtocol .
+
+
+###  http://www.near.flights/ontologies/dte#IdCard
+:IdCard rdf:type owl:Class ;
+        rdfs:subClassOf :UserAuthentication .
+
+
+###  http://www.near.flights/ontologies/dte#IdentifyAwareProxy
+:IdentifyAwareProxy rdf:type owl:Class ;
+                    rdfs:subClassOf :PrivateNetwork .
+
+
+###  http://www.near.flights/ontologies/dte#IntelOpenSourceLicense
+:IntelOpenSourceLicense rdf:type owl:Class ;
+                        rdfs:subClassOf :PermissiveSoftwareLicense .
+
+
+###  http://www.near.flights/ontologies/dte#InternetLayerProtocol
+:InternetLayerProtocol rdf:type owl:Class ;
+                       rdfs:subClassOf :Protocol .
+
+
+###  http://www.near.flights/ontologies/dte#IpAddress
+:IpAddress rdf:type owl:Class ;
+           rdfs:subClassOf :RoutableAddress .
+
+
+###  http://www.near.flights/ontologies/dte#IpProtocol
+:IpProtocol rdf:type owl:Class ;
+            rdfs:subClassOf :InternetLayerProtocol .
+
+
+###  http://www.near.flights/ontologies/dte#Ipv4Address
+:Ipv4Address rdf:type owl:Class ;
+             rdfs:subClassOf :IpAddress ;
+             owl:disjointWith :Ipv6Address .
+
+
+###  http://www.near.flights/ontologies/dte#Ipv4Protocol
+:Ipv4Protocol rdf:type owl:Class ;
+              rdfs:subClassOf :IpProtocol ;
+              owl:disjointWith :Ipv6Protocol .
+
+
+###  http://www.near.flights/ontologies/dte#Ipv6Address
+:Ipv6Address rdf:type owl:Class ;
+             rdfs:subClassOf :IpAddress .
+
+
+###  http://www.near.flights/ontologies/dte#Ipv6Protocol
+:Ipv6Protocol rdf:type owl:Class ;
+              rdfs:subClassOf :IpProtocol .
+
+
+###  http://www.near.flights/ontologies/dte#JSON
+:JSON rdf:type owl:Class ;
+      rdfs:subClassOf :DataRepresentation .
+
+
+###  http://www.near.flights/ontologies/dte#JavaMessagingService
+:JavaMessagingService rdf:type owl:Class ;
+                      rdfs:subClassOf :ApplicationLayerProtocol ;
+                      rdfs:isDefinedBy "https://docs.oracle.com/cd/E19957-01/816-5904-10/816-5904-10.pdf" .
+
+
+###  http://www.near.flights/ontologies/dte#JmsPublisher
+:JmsPublisher rdf:type owl:Class ;
+              rdfs:subClassOf :JavaMessagingService ;
+              owl:disjointWith :JmsSubscriber .
+
+
+###  http://www.near.flights/ontologies/dte#JmsSubscriber
+:JmsSubscriber rdf:type owl:Class ;
+               rdfs:subClassOf :JavaMessagingService .
+
+
+###  http://www.near.flights/ontologies/dte#JsonSchema
+:JsonSchema rdf:type owl:Class ;
+            rdfs:subClassOf :JSON .
+
+
+###  http://www.near.flights/ontologies/dte#KeyExchangeAlgorithms
+:KeyExchangeAlgorithms rdf:type owl:Class ;
+                       rdfs:subClassOf :ApplicationSecurity .
+
+
+###  http://www.near.flights/ontologies/dte#LGPL
+:LGPL rdf:type owl:Class ;
+      rdfs:subClassOf :Copyleft .
+
+
+###  http://www.near.flights/ontologies/dte#Laptop
+:Laptop rdf:type owl:Class ;
+        rdfs:subClassOf :Computer .
+
+
+###  http://www.near.flights/ontologies/dte#LinkLayerProtocol
+:LinkLayerProtocol rdf:type owl:Class ;
+                   rdfs:subClassOf :Protocol .
+
+
+###  http://www.near.flights/ontologies/dte#Linux
+:Linux rdf:type owl:Class ;
+       rdfs:subClassOf :OperatingSystem .
+
+
+###  http://www.near.flights/ontologies/dte#LoadBalancer
+:LoadBalancer rdf:type owl:Class ;
+              rdfs:subClassOf :ServerSoftware ,
+                              [ rdf:type owl:Restriction ;
+                                owl:onProperty d3fend:may-evaluate ;
+                                owl:someValuesFrom :Protocol
+                              ] ,
+                              [ rdf:type owl:Restriction ;
+                                owl:onProperty d3fend:may-interpret ;
+                                owl:someValuesFrom :Protocol
+                              ] ,
+                              [ rdf:type owl:Restriction ;
+                                owl:onProperty d3fend:may-produce ;
+                                owl:someValuesFrom :Protocol
+                              ] ,
+                              [ rdf:type owl:Restriction ;
+                                owl:onProperty d3fend:may-transfer ;
+                                owl:someValuesFrom :NetworkPacket
+                              ] .
+
+
+###  http://www.near.flights/ontologies/dte#LocalAccount
+:LocalAccount rdf:type owl:Class ;
+              rdfs:subClassOf :Account .
+
+
+###  http://www.near.flights/ontologies/dte#MD4
+:MD4 rdf:type owl:Class ;
+     rdfs:subClassOf :HashValue ;
+     rdfs:isDefinedBy "https://datatracker.ietf.org/doc/html/rfc1320" .
+
+
+###  http://www.near.flights/ontologies/dte#MD5
+:MD5 rdf:type owl:Class ;
+     rdfs:subClassOf :HashValue ,
+                     [ rdf:type owl:Restriction ;
+                       owl:onProperty d3fend:has-weakness ;
+                       owl:someValuesFrom :CVE-2004-2761
+                     ] ;
+     rdfs:isDefinedBy "https://datatracker.ietf.org/doc/html/rfc1321" .
+
+
+###  http://www.near.flights/ontologies/dte#MITLicense
+:MITLicense rdf:type owl:Class ;
+            rdfs:subClassOf :PermissiveSoftwareLicense .
+
+
+###  http://www.near.flights/ontologies/dte#MQTT
+:MQTT rdf:type owl:Class ;
+      rdfs:subClassOf :ApplicationLayerProtocol ,
+                      [ rdf:type owl:Restriction ;
+                        owl:onProperty d3fend:has-weakness ;
+                        owl:someValuesFrom :CVE-2020-13849
+                      ] ;
+      rdfs:isDefinedBy "https://www.iso.org/standard/69466.html" .
+
+
+###  http://www.near.flights/ontologies/dte#MacOS
+:MacOS rdf:type owl:Class ;
+       rdfs:subClassOf :OperatingSystem .
+
+
+###  http://www.near.flights/ontologies/dte#MailProtocol
+:MailProtocol rdf:type owl:Class ;
+              rdfs:subClassOf :ApplicationLayerProtocol ,
+                              [ rdf:type owl:Restriction ;
+                                owl:onProperty d3fend:may-contain ;
+                                owl:someValuesFrom d3fend:MessageAuthentication
+                              ] ,
+                              [ rdf:type owl:Restriction ;
+                                owl:onProperty d3fend:may-contain ;
+                                owl:someValuesFrom d3fend:MessageEncryption
+                              ] .
+
+
+###  http://www.near.flights/ontologies/dte#MailServer
+:MailServer rdf:type owl:Class ;
+            rdfs:subClassOf :ServerSoftware ,
+                            [ rdf:type owl:Restriction ;
+                              owl:onProperty d3fend:may-interpret ;
+                              owl:someValuesFrom :MailProtocol
+                            ] ,
+                            [ rdf:type owl:Restriction ;
+                              owl:onProperty d3fend:may-modify ;
+                              owl:someValuesFrom :Document
+                            ] ,
+                            [ rdf:type owl:Restriction ;
+                              owl:onProperty d3fend:may-produce ;
+                              owl:someValuesFrom :MailProtocol
+                            ] .
+
+
+###  http://www.near.flights/ontologies/dte#Mainframe
+:Mainframe rdf:type owl:Class ;
+           rdfs:subClassOf :PhysicalDevice ,
+                           [ rdf:type owl:Restriction ;
+                             owl:onProperty d3fend:may-contain ;
+                             owl:someValuesFrom :OperatingSystem
+                           ] .
+
+
+###  http://www.near.flights/ontologies/dte#MediaController
+:MediaController rdf:type owl:Class ;
+                 rdfs:subClassOf :HardwareInterfaceDevice .
+
+
+###  http://www.near.flights/ontologies/dte#MediumAccessControl
+:MediumAccessControl rdf:type owl:Class ;
+                     rdfs:subClassOf :LinkLayerProtocol ;
+                     owl:disjointWith :PointToPointProtocol .
+
+
+###  http://www.near.flights/ontologies/dte#MeshNetworkRadio
+:MeshNetworkRadio rdf:type owl:Class ;
+                  rdfs:subClassOf :RadioModule .
+
+
+###  http://www.near.flights/ontologies/dte#MessageBroker
+:MessageBroker rdf:type owl:Class ;
+               rdfs:subClassOf :Software ,
+                               [ rdf:type owl:Restriction ;
+                                 owl:onProperty d3fend:produces ;
+                                 owl:someValuesFrom :ActiveMQ
+                               ] .
+
+
+###  http://www.near.flights/ontologies/dte#MessageContruct
+:MessageContruct rdf:type owl:Class ;
+                 rdfs:subClassOf :NetworkCommunication .
+
+
+###  http://www.near.flights/ontologies/dte#MessageExpiration
+:MessageExpiration rdf:type owl:Class ;
+                   rdfs:subClassOf :MessageContruct .
+
+
+###  http://www.near.flights/ontologies/dte#MessageHash
+:MessageHash rdf:type owl:Class ;
+             rdfs:subClassOf :MessageContruct .
+
+
+###  http://www.near.flights/ontologies/dte#MessagePriority
+:MessagePriority rdf:type owl:Class ;
+                 rdfs:subClassOf :MessageContruct .
+
+
+###  http://www.near.flights/ontologies/dte#MessageTimestamp
+:MessageTimestamp rdf:type owl:Class ;
+                  rdfs:subClassOf :MessageContruct .
+
+
+###  http://www.near.flights/ontologies/dte#MixedReality
+:MixedReality rdf:type owl:Class ;
+              rdfs:subClassOf :HardwareInterfaceDevice .
+
+
+###  http://www.near.flights/ontologies/dte#MixedRealityControllers
+:MixedRealityControllers rdf:type owl:Class ;
+                         rdfs:subClassOf :MixedReality ;
+                         owl:disjointWith :MixedRealityHeadset .
+
+
+###  http://www.near.flights/ontologies/dte#MixedRealityHeadset
+:MixedRealityHeadset rdf:type owl:Class ;
+                     rdfs:subClassOf :MixedReality .
+
+
+###  http://www.near.flights/ontologies/dte#MovingLocation
+:MovingLocation rdf:type owl:Class ;
+                rdfs:subClassOf :UserDeviceLocation .
+
+
+###  http://www.near.flights/ontologies/dte#MozillaPublicLicense
+:MozillaPublicLicense rdf:type owl:Class ;
+                      rdfs:subClassOf :Copyleft .
+
+
+###  http://www.near.flights/ontologies/dte#NDP
+:NDP rdf:type owl:Class ;
+     rdfs:subClassOf :InternetLayerProtocol .
+
+
+###  http://www.near.flights/ontologies/dte#NTP
+:NTP rdf:type owl:Class ;
+     rdfs:subClassOf :ApplicationLayerProtocol .
+
+
+###  http://www.near.flights/ontologies/dte#Netstat
+:Netstat rdf:type owl:Class ;
+         rdfs:subClassOf :NetworkActivity .
+
+
+###  http://www.near.flights/ontologies/dte#Network
+:Network rdf:type owl:Class ;
+         rdfs:subClassOf :NetworkConstruct .
+
+
+###  http://www.near.flights/ontologies/dte#NetworkActivity
+:NetworkActivity rdf:type owl:Class ;
+                 rdfs:subClassOf :NetworkConstruct .
+
+
+###  http://www.near.flights/ontologies/dte#NetworkAnalytics
+:NetworkAnalytics rdf:type owl:Class ;
+                  rdfs:subClassOf :SecurityMeasure .
+
+
+###  http://www.near.flights/ontologies/dte#NetworkCommunication
+:NetworkCommunication rdf:type owl:Class ;
+                      rdfs:subClassOf :NetworkConstruct .
+
+
+###  http://www.near.flights/ontologies/dte#NetworkConstruct
+:NetworkConstruct rdf:type owl:Class ;
+                  rdfs:subClassOf :Digital .
+
+
+###  http://www.near.flights/ontologies/dte#NetworkData
+:NetworkData rdf:type owl:Class ;
+             rdfs:subClassOf :Data .
+
+
+###  http://www.near.flights/ontologies/dte#NetworkDescriptor
+:NetworkDescriptor rdf:type owl:Class ;
+                   rdfs:subClassOf :NetworkConstruct .
+
+
+###  http://www.near.flights/ontologies/dte#NetworkGateway
+:NetworkGateway rdf:type owl:Class ;
+                rdfs:subClassOf :NetworkDescriptor ,
+                                [ rdf:type owl:Restriction ;
+                                  owl:onProperty d3fend:contains ;
+                                  owl:someValuesFrom :RoutableAddress
+                                ] .
+
+
+###  http://www.near.flights/ontologies/dte#NetworkHub
+:NetworkHub rdf:type owl:Class ;
+            rdfs:subClassOf :NetworkingDevice .
+
+
+###  http://www.near.flights/ontologies/dte#NetworkInterfaceDevice
+:NetworkInterfaceDevice rdf:type owl:Class ;
+                        rdfs:subClassOf :PhysicalComponent .
+
+
+###  http://www.near.flights/ontologies/dte#NetworkPacket
+:NetworkPacket rdf:type owl:Class ;
+               rdfs:subClassOf :NetworkData ,
+                               [ rdf:type owl:Restriction ;
+                                 owl:onProperty d3fend:may-be-contained-by ;
+                                 owl:someValuesFrom :Protocol
+                               ] .
+
+
+###  http://www.near.flights/ontologies/dte#NetworkingDevice
+:NetworkingDevice rdf:type owl:Class ;
+                  rdfs:subClassOf :PhysicalDevice ,
+                                  [ rdf:type owl:Restriction ;
+                                    owl:onProperty d3fend:contains ;
+                                    owl:someValuesFrom :NetworkInterfaceDevice
+                                  ] ,
+                                  [ rdf:type owl:Restriction ;
+                                    owl:onProperty d3fend:may-contain ;
+                                    owl:someValuesFrom :OperatingSystem
+                                  ] .
+
+
+###  http://www.near.flights/ontologies/dte#Noncommercial
+:Noncommercial rdf:type owl:Class ;
+               rdfs:subClassOf :SoftwareLicense .
+
+
+###  http://www.near.flights/ontologies/dte#Nuttx
+:Nuttx rdf:type owl:Class ;
+       rdfs:subClassOf :RealTimeOperatingSystem .
+
+
+###  http://www.near.flights/ontologies/dte#OPTIONS
+:OPTIONS rdf:type owl:Class ;
+         rdfs:subClassOf :HttpRequestMethod .
+
+
+###  http://www.near.flights/ontologies/dte#OSIdentification
+:OSIdentification rdf:type owl:Class ;
+                  rdfs:subClassOf :UserDeviceAuthorization .
+
+
+###  http://www.near.flights/ontologies/dte#OS_Patch_Level
+:OS_Patch_Level rdf:type owl:Class ;
+                rdfs:subClassOf :OSIdentification .
+
+
+###  http://www.near.flights/ontologies/dte#OS_Type
+:OS_Type rdf:type owl:Class ;
+         rdfs:subClassOf :OSIdentification .
+
+
+###  http://www.near.flights/ontologies/dte#OS_Version
+:OS_Version rdf:type owl:Class ;
+            rdfs:subClassOf :OSIdentification .
+
+
+###  http://www.near.flights/ontologies/dte#OpenBSD
+:OpenBSD rdf:type owl:Class ;
+         rdfs:subClassOf :BSD .
+
+
+###  http://www.near.flights/ontologies/dte#OpenWire
+:OpenWire rdf:type owl:Class ;
+          rdfs:subClassOf :ApplicationLayerProtocol ;
+          rdfs:isDefinedBy "https://mitov.com/products/openwire#overview" .
+
+
+###  http://www.near.flights/ontologies/dte#OperatingSystem
+:OperatingSystem rdf:type owl:Class ;
+                 rdfs:subClassOf :SystemSoftware ,
+                                 [ rdf:type owl:Restriction ;
+                                   owl:onProperty d3fend:contains ;
+                                   owl:someValuesFrom :BuildIdentifier
+                                 ] ;
+                 owl:disjointWith :SystemDriver .
+
+
+###  http://www.near.flights/ontologies/dte#PATCH
+:PATCH rdf:type owl:Class ;
+       rdfs:subClassOf :HttpRequestMethod .
+
+
+###  http://www.near.flights/ontologies/dte#PIN
+:PIN rdf:type owl:Class ;
+     rdfs:subClassOf :UserAuthentication .
+
+
+###  http://www.near.flights/ontologies/dte#POP
+:POP rdf:type owl:Class ;
+     rdfs:subClassOf :MailProtocol .
+
+
+###  http://www.near.flights/ontologies/dte#POP3
+:POP3 rdf:type owl:Class ;
+      rdfs:subClassOf :POP .
+
+
+###  http://www.near.flights/ontologies/dte#POST
+:POST rdf:type owl:Class ;
+      rdfs:subClassOf :HttpRequestMethod .
+
+
+###  http://www.near.flights/ontologies/dte#PSK
+:PSK rdf:type owl:Class ;
+     rdfs:subClassOf :KeyExchangeAlgorithms .
+
+
+###  http://www.near.flights/ontologies/dte#PTP
+:PTP rdf:type owl:Class ;
+     rdfs:subClassOf :ApplicationLayerProtocol .
+
+
+###  http://www.near.flights/ontologies/dte#PUT
+:PUT rdf:type owl:Class ;
+     rdfs:subClassOf :HttpRequestMethod .
+
+
+###  http://www.near.flights/ontologies/dte#Password
+:Password rdf:type owl:Class ;
+          rdfs:subClassOf :UserAuthentication .
+
+
+###  http://www.near.flights/ontologies/dte#PermissiveSoftwareLicense
+:PermissiveSoftwareLicense rdf:type owl:Class ;
+                           rdfs:subClassOf :SoftwareLicense .
+
+
+###  http://www.near.flights/ontologies/dte#PhysicalComponent
+:PhysicalComponent rdf:type owl:Class ;
+                   rdfs:subClassOf :PhysicalEntity .
+
+
+###  http://www.near.flights/ontologies/dte#PhysicalDevice
+:PhysicalDevice rdf:type owl:Class ;
+                rdfs:subClassOf :PhysicalEntity .
+
+
+###  http://www.near.flights/ontologies/dte#PhysicalEntity
+:PhysicalEntity rdf:type owl:Class ;
+                rdfs:subClassOf :DTEThing .
+
+
+###  http://www.near.flights/ontologies/dte#PhysicalNetwork
+:PhysicalNetwork rdf:type owl:Class ;
+                 rdfs:subClassOf :Network .
+
+
+###  http://www.near.flights/ontologies/dte#Ping
+:Ping rdf:type owl:Class ;
+      rdfs:subClassOf :NetworkActivity ,
+                      [ rdf:type owl:Restriction ;
+                        owl:onProperty d3fend:produces ;
+                        owl:someValuesFrom :ICMP
+                      ] .
+
+
+###  http://www.near.flights/ontologies/dte#PointToPointProtocol
+:PointToPointProtocol rdf:type owl:Class ;
+                      rdfs:subClassOf :LinkLayerProtocol .
+
+
+###  http://www.near.flights/ontologies/dte#Printer
+:Printer rdf:type owl:Class ;
+         rdfs:subClassOf :PhysicalDevice ,
+                         [ rdf:type owl:Restriction ;
+                           owl:onProperty d3fend:may-contain ;
+                           owl:someValuesFrom :NetworkInterfaceDevice
+                         ] ,
+                         [ rdf:type owl:Restriction ;
+                           owl:onProperty d3fend:may-contain ;
+                           owl:someValuesFrom :OperatingSystem
+                         ] ,
+                         [ rdf:type owl:Restriction ;
+                           owl:onProperty d3fend:may-contain ;
+                           owl:someValuesFrom :WiFiModule
+                         ] .
+
+
+###  http://www.near.flights/ontologies/dte#PrivateNetwork
+:PrivateNetwork rdf:type owl:Class ;
+                rdfs:subClassOf :Network .
+
+
+###  http://www.near.flights/ontologies/dte#PrivilegedAccount
+:PrivilegedAccount rdf:type owl:Class ;
+                   rdfs:subClassOf :Account ,
+                                   [ rdf:type owl:Restriction ;
+                                     owl:onProperty d3fend:installs ;
+                                     owl:someValuesFrom :Software
+                                   ] ;
+                   terms:description "An information system account with approved authorizations of a privileged user." ;
+                   rdfs:isDefinedBy "https://csrc.nist.gov/glossary/term/privileged_account" .
+
+
+###  http://www.near.flights/ontologies/dte#PropietaryLicense
+:PropietaryLicense rdf:type owl:Class ;
+                   rdfs:subClassOf :SoftwareLicense .
+
+
+###  http://www.near.flights/ontologies/dte#Protocol
+:Protocol rdf:type owl:Class ;
+          rdfs:subClassOf :NetworkCommunication ,
+                          [ rdf:type owl:Restriction ;
+                            owl:onProperty d3fend:may-contain ;
+                            owl:someValuesFrom :ProtocolDescriptor
+                          ] ,
+                          [ rdf:type owl:Restriction ;
+                            owl:onProperty d3fend:may-have-weakness ;
+                            owl:someValuesFrom :CVE
+                          ] ,
+                          [ rdf:type owl:Restriction ;
+                            owl:onProperty d3fend:may-produce ;
+                            owl:someValuesFrom :NetworkPacket
+                          ] .
+
+
+###  http://www.near.flights/ontologies/dte#ProtocolDescriptor
+:ProtocolDescriptor rdf:type owl:Class ;
+                    rdfs:subClassOf :NetworkData .
+
+
+###  http://www.near.flights/ontologies/dte#ProxyServer
+:ProxyServer rdf:type owl:Class ;
+             rdfs:subClassOf :ServerSoftware ,
+                             [ rdf:type owl:Restriction ;
+                               owl:onProperty d3fend:may-produce ;
+                               owl:someValuesFrom :Protocol
+                             ] .
+
+
+###  http://www.near.flights/ontologies/dte#PublicDomain
+:PublicDomain rdf:type owl:Class ;
+              rdfs:subClassOf :SoftwareLicense .
+
+
+###  http://www.near.flights/ontologies/dte#PythonLicense
+:PythonLicense rdf:type owl:Class ;
+               rdfs:subClassOf :PermissiveSoftwareLicense .
+
+
+###  http://www.near.flights/ontologies/dte#QUIC
+:QUIC rdf:type owl:Class ;
+      rdfs:subClassOf :TransportLayerProtocol ,
+                      [ rdf:type owl:Restriction ;
+                        owl:onProperty d3fend:extends ;
+                        owl:someValuesFrom :UDP
+                      ] .
+
+
+###  http://www.near.flights/ontologies/dte#RCA
+:RCA rdf:type owl:Class ;
+     rdfs:subClassOf :CipherSuites .
+
+
+###  http://www.near.flights/ontologies/dte#RIPEMD-160
+:RIPEMD-160 rdf:type owl:Class ;
+            rdfs:subClassOf :HashValue ;
+            rdfs:isDefinedBy "https://datatracker.ietf.org/doc/rfc2857/" .
+
+
+###  http://www.near.flights/ontologies/dte#RJ45EthernetInterfaceDevice
+:RJ45EthernetInterfaceDevice rdf:type owl:Class ;
+                             rdfs:subClassOf :EthernetInterfaceDevice .
+
+
+###  http://www.near.flights/ontologies/dte#RSA
+:RSA rdf:type owl:Class ;
+     rdfs:subClassOf :CipherSuites ,
+                     :KeyExchangeAlgorithms .
+
+
+###  http://www.near.flights/ontologies/dte#RSVP
+:RSVP rdf:type owl:Class ;
+      rdfs:subClassOf :TransportLayerProtocol .
+
+
+###  http://www.near.flights/ontologies/dte#RTP
+:RTP rdf:type owl:Class ;
+     rdfs:subClassOf :ApplicationLayerProtocol .
+
+
+###  http://www.near.flights/ontologies/dte#RTSP
+:RTSP rdf:type owl:Class ;
+      rdfs:subClassOf :ApplicationLayerProtocol .
+
+
+###  http://www.near.flights/ontologies/dte#RadioModule
+:RadioModule rdf:type owl:Class ;
+             rdfs:subClassOf :PhysicalComponent .
+
+
+###  http://www.near.flights/ontologies/dte#RealTimeOperatingSystem
+:RealTimeOperatingSystem rdf:type owl:Class ;
+                         rdfs:subClassOf :OperatingSystem .
+
+
+###  http://www.near.flights/ontologies/dte#RemoteTerminalAccess
+:RemoteTerminalAccess rdf:type owl:Class ;
+                      rdfs:subClassOf :Application .
+
+
+###  http://www.near.flights/ontologies/dte#RemovableDevice
+:RemovableDevice rdf:type owl:Class ;
+                 rdfs:subClassOf :PhysicalComponent .
+
+
+###  http://www.near.flights/ontologies/dte#RemovableMediaDevice
+:RemovableMediaDevice rdf:type owl:Class ;
+                      rdfs:subClassOf :RemovableDevice ,
+                                      [ rdf:type owl:Restriction ;
+                                        owl:onProperty d3fend:may-contain ;
+                                        owl:someValuesFrom :Document
+                                      ] ,
+                                      [ rdf:type owl:Restriction ;
+                                        owl:onProperty d3fend:may-contain ;
+                                        owl:someValuesFrom :Software
+                                      ] ;
+                      terms:description "Portable device that can be connected to an information system (IS), computer, or network to provide data storage. These devices interface with the IS through processing chips and may load driver software, presenting a greater security risk to the IS than non-device media, such as optical discs or flash memory cards. Note: Examples include, but are not limited to: USB flash drives, external hard drives, and external solid state disk (SSD) drives. Portable Storage Devices also include memory cards that have additional functions aside from standard data storage and encrypted data storage, such as built-in Wi-Fi connectivity and global positioning system (GPS) reception. See also removable media." ;
+                      rdfs:isDefinedBy "https://csrc.nist.gov/glossary/term/removable_media_device" .
+
+
+###  http://www.near.flights/ontologies/dte#RoutableAddress
+:RoutableAddress rdf:type owl:Class ;
+                 rdfs:subClassOf :NetworkDescriptor .
+
+
+###  http://www.near.flights/ontologies/dte#Router
+:Router rdf:type owl:Class ;
+        rdfs:subClassOf :NetworkingDevice .
+
+
+###  http://www.near.flights/ontologies/dte#SCTP
+:SCTP rdf:type owl:Class ;
+      rdfs:subClassOf :TransportLayerProtocol .
+
+
+###  http://www.near.flights/ontologies/dte#SFTP
+:SFTP rdf:type owl:Class ;
+      rdfs:subClassOf :FTP ,
+                      [ rdf:type owl:Restriction ;
+                        owl:onProperty d3fend:implements ;
+                        owl:someValuesFrom d3fend:MessageEncryption
+                      ] .
+
+
+###  http://www.near.flights/ontologies/dte#SHA
+:SHA rdf:type owl:Class ;
+     rdfs:subClassOf :HashValue .
+
+
+###  http://www.near.flights/ontologies/dte#SHA-0
+:SHA-0 rdf:type owl:Class ;
+       rdfs:subClassOf :SHA ;
+       rdfs:isDefinedBy "https://datatracker.ietf.org/doc/html/rfc6194" .
+
+
+###  http://www.near.flights/ontologies/dte#SHA-1
+:SHA-1 rdf:type owl:Class ;
+       rdfs:subClassOf :SHA ;
+       rdfs:isDefinedBy "https://datatracker.ietf.org/doc/html/rfc6194" .
+
+
+###  http://www.near.flights/ontologies/dte#SHA-2
+:SHA-2 rdf:type owl:Class ;
+       rdfs:subClassOf :SHA .
+
+
+###  http://www.near.flights/ontologies/dte#SHA-224
+:SHA-224 rdf:type owl:Class ;
+         rdfs:subClassOf :SHA-2 .
+
+
+###  http://www.near.flights/ontologies/dte#SHA-256
+:SHA-256 rdf:type owl:Class ;
+         rdfs:subClassOf :SHA-2 .
+
+
+###  http://www.near.flights/ontologies/dte#SHA-3
+:SHA-3 rdf:type owl:Class ;
+       rdfs:subClassOf :SHA .
+
+
+###  http://www.near.flights/ontologies/dte#SHA-384
+:SHA-384 rdf:type owl:Class ;
+         rdfs:subClassOf :SHA-2 .
+
+
+###  http://www.near.flights/ontologies/dte#SHA-512
+:SHA-512 rdf:type owl:Class ;
+         rdfs:subClassOf :SHA-2 .
+
+
+###  http://www.near.flights/ontologies/dte#SHA3-224
+:SHA3-224 rdf:type owl:Class ;
+          rdfs:subClassOf :SHA-3 .
+
+
+###  http://www.near.flights/ontologies/dte#SHA3-256
+:SHA3-256 rdf:type owl:Class ;
+          rdfs:subClassOf :SHA-3 .
+
+
+###  http://www.near.flights/ontologies/dte#SHA3-384
+:SHA3-384 rdf:type owl:Class ;
+          rdfs:subClassOf :SHA-3 .
+
+
+###  http://www.near.flights/ontologies/dte#SHA3-512
+:SHA3-512 rdf:type owl:Class ;
+          rdfs:subClassOf :SHA-3 .
+
+
+###  http://www.near.flights/ontologies/dte#SHAKE128
+:SHAKE128 rdf:type owl:Class ;
+          rdfs:subClassOf :SHA-3 .
+
+
+###  http://www.near.flights/ontologies/dte#SHAKE256
+:SHAKE256 rdf:type owl:Class ;
+          rdfs:subClassOf :SHA-3 .
+
+
+###  http://www.near.flights/ontologies/dte#SMTP
+:SMTP rdf:type owl:Class ;
+      rdfs:subClassOf :ApplicationLayerProtocol ;
+      rdfs:comment "https://datatracker.ietf.org/doc/html/rfc8314" ;
+      rdfs:isDefinedBy "https://datatracker.ietf.org/doc/html/rfc5321" .
+
+
+###  http://www.near.flights/ontologies/dte#SOAP
+:SOAP rdf:type owl:Class ;
+      rdfs:subClassOf :ApplicationLayerProtocol ;
+      rdfs:isDefinedBy "https://datatracker.ietf.org/doc/html/rfc4227" .
+
+
+###  http://www.near.flights/ontologies/dte#SQL
+:SQL rdf:type owl:Class ;
+     rdfs:subClassOf :DataRepresentation .
+
+
+###  http://www.near.flights/ontologies/dte#SSL
+:SSL rdf:type owl:Class ;
+     rdfs:subClassOf :ApplicationLayerProtocol .
+
+
+###  http://www.near.flights/ontologies/dte#SSLv2
+:SSLv2 rdf:type owl:Class ;
+       rdfs:subClassOf :SSL ;
+       owl:disjointWith :SSLv3 .
+
+
+###  http://www.near.flights/ontologies/dte#SSLv3
+:SSLv3 rdf:type owl:Class ;
+       rdfs:subClassOf :SSL .
+
+
+###  http://www.near.flights/ontologies/dte#STOMP
+:STOMP rdf:type owl:Class ;
+       rdfs:subClassOf :ApplicationLayerProtocol ;
+       rdfs:isDefinedBy "https://stomp.github.io/stomp-specification-1.2.html" .
+
+
+###  http://www.near.flights/ontologies/dte#SatelliteModule
+:SatelliteModule rdf:type owl:Class ;
+                 rdfs:subClassOf :RadioModule .
+
+
+###  http://www.near.flights/ontologies/dte#SecurityMeasure
+:SecurityMeasure rdf:type owl:Class ;
+                 rdfs:subClassOf :Digital .
+
+
+###  http://www.near.flights/ontologies/dte#Server
+:Server rdf:type owl:Class ;
+        rdfs:subClassOf :Computer ,
+                        [ rdf:type owl:Restriction ;
+                          owl:onProperty d3fend:contains ;
+                          owl:someValuesFrom :NetworkInterfaceDevice
+                        ] .
+
+
+###  http://www.near.flights/ontologies/dte#ServerSoftware
+:ServerSoftware rdf:type owl:Class ;
+                rdfs:subClassOf :Software .
+
+
+###  http://www.near.flights/ontologies/dte#ServiceAccount
+:ServiceAccount rdf:type owl:Class ;
+                rdfs:subClassOf :PrivilegedAccount .
+
+
+###  http://www.near.flights/ontologies/dte#Simulator
+:Simulator rdf:type owl:Class ;
+           rdfs:subClassOf :Application .
+
+
+###  http://www.near.flights/ontologies/dte#SmartPhone
+:SmartPhone rdf:type owl:Class ;
+            rdfs:subClassOf :PhysicalDevice ,
+                            [ rdf:type owl:Restriction ;
+                              owl:onProperty d3fend:contains ;
+                              owl:someValuesFrom :CellularModule
+                            ] ,
+                            [ rdf:type owl:Restriction ;
+                              owl:onProperty d3fend:may-contain ;
+                              owl:someValuesFrom :GPSModule
+                            ] ,
+                            [ rdf:type owl:Restriction ;
+                              owl:onProperty d3fend:may-contain ;
+                              owl:someValuesFrom :WiFiModule
+                            ] .
+
+
+###  http://www.near.flights/ontologies/dte#Software
+:Software rdf:type owl:Class ;
+          rdfs:subClassOf :Data ,
+                          [ rdf:type owl:Restriction ;
+                            owl:onProperty d3fend:may-contain ;
+                            owl:someValuesFrom :SoftwareLicense
+                          ] ,
+                          [ rdf:type owl:Restriction ;
+                            owl:onProperty d3fend:may-have-weakness ;
+                            owl:someValuesFrom :CVE
+                          ] .
+
+
+###  http://www.near.flights/ontologies/dte#SoftwareDefinedRadio
+:SoftwareDefinedRadio rdf:type owl:Class ;
+                      rdfs:subClassOf :RadioModule .
+
+
+###  http://www.near.flights/ontologies/dte#SoftwareInstaller
+:SoftwareInstaller rdf:type owl:Class ;
+                   rdfs:subClassOf :SoftwareUpdater ;
+                   skos:altLabel "Installer" .
+
+
+###  http://www.near.flights/ontologies/dte#SoftwareIntegrity
+:SoftwareIntegrity rdf:type owl:Class ;
+                   rdfs:subClassOf :SecurityMeasure .
+
+
+###  http://www.near.flights/ontologies/dte#SoftwareLibrary
+:SoftwareLibrary rdf:type owl:Class ;
+                 rdfs:subClassOf :Software .
+
+
+###  http://www.near.flights/ontologies/dte#SoftwareLicense
+:SoftwareLicense rdf:type owl:Class ;
+                 rdfs:subClassOf :Digital .
+
+
+###  http://www.near.flights/ontologies/dte#SoftwarePatch
+:SoftwarePatch rdf:type owl:Class ;
+               rdfs:subClassOf :SoftwareUpdater .
+
+
+###  http://www.near.flights/ontologies/dte#SoftwareTestReport
+:SoftwareTestReport rdf:type owl:Class ;
+                    rdfs:subClassOf :SoftwareIntegrity .
+
+
+###  http://www.near.flights/ontologies/dte#SoftwareUpdater
+:SoftwareUpdater rdf:type owl:Class ;
+                 rdfs:subClassOf :Software .
+
+
+###  http://www.near.flights/ontologies/dte#Source
+:Source rdf:type owl:Class ;
+        rdfs:subClassOf :NetworkAnalytics .
+
+
+###  http://www.near.flights/ontologies/dte#Subnet
+:Subnet rdf:type owl:Class ;
+        rdfs:subClassOf :NetworkDescriptor .
+
+
+###  http://www.near.flights/ontologies/dte#Switch
+:Switch rdf:type owl:Class ;
+        rdfs:subClassOf :NetworkingDevice .
+
+
+###  http://www.near.flights/ontologies/dte#SystemDriver
+:SystemDriver rdf:type owl:Class ;
+              rdfs:subClassOf :SystemSoftware .
+
+
+###  http://www.near.flights/ontologies/dte#SystemSoftware
+:SystemSoftware rdf:type owl:Class ;
+                rdfs:subClassOf :Software .
+
+
+###  http://www.near.flights/ontologies/dte#SystemUpdaterOchestrator
+:SystemUpdaterOchestrator rdf:type owl:Class ;
+                          rdfs:subClassOf :SystemSoftware ,
+                                          [ rdf:type owl:Restriction ;
+                                            owl:onProperty d3fend:evaluates ;
+                                            owl:someValuesFrom :BuildIdentifier
+                                          ] ,
+                                          [ rdf:type owl:Restriction ;
+                                            owl:onProperty d3fend:may-access ;
+                                            owl:someValuesFrom :Document
+                                          ] ,
+                                          [ rdf:type owl:Restriction ;
+                                            owl:onProperty d3fend:may-access ;
+                                            owl:someValuesFrom :Software
+                                          ] ,
+                                          [ rdf:type owl:Restriction ;
+                                            owl:onProperty d3fend:may-add ;
+                                            owl:someValuesFrom :Software
+                                          ] ,
+                                          [ rdf:type owl:Restriction ;
+                                            owl:onProperty d3fend:may-evaluate ;
+                                            owl:someValuesFrom :Software
+                                          ] ,
+                                          [ rdf:type owl:Restriction ;
+                                            owl:onProperty d3fend:may-execute ;
+                                            owl:someValuesFrom :Software
+                                          ] .
+
+
+###  http://www.near.flights/ontologies/dte#TCP
+:TCP rdf:type owl:Class ;
+     rdfs:subClassOf :TransportLayerProtocol ;
+     rdfs:isDefinedBy "https://datatracker.ietf.org/doc/html/rfc9293" .
+
+
+###  http://www.near.flights/ontologies/dte#TLS
+:TLS rdf:type owl:Class ;
+     rdfs:subClassOf :ApplicationLayerProtocol .
+
+
+###  http://www.near.flights/ontologies/dte#TLSv1.0
+:TLSv1.0 rdf:type owl:Class ;
+         rdfs:subClassOf :TLS .
+
+
+###  http://www.near.flights/ontologies/dte#TLSv1.2
+:TLSv1.2 rdf:type owl:Class ;
+         rdfs:subClassOf :TLS .
+
+
+###  http://www.near.flights/ontologies/dte#TLSv1.3
+:TLSv1.3 rdf:type owl:Class ;
+         rdfs:subClassOf :TLS .
+
+
+###  http://www.near.flights/ontologies/dte#TRACE
+:TRACE rdf:type owl:Class ;
+       rdfs:subClassOf :HttpRequestMethod .
+
+
+###  http://www.near.flights/ontologies/dte#Tablet
+:Tablet rdf:type owl:Class ;
+        rdfs:subClassOf :PhysicalDevice ,
+                        [ rdf:type owl:Restriction ;
+                          owl:onProperty d3fend:may-contain ;
+                          owl:someValuesFrom :CellularModule
+                        ] ,
+                        [ rdf:type owl:Restriction ;
+                          owl:onProperty d3fend:may-contain ;
+                          owl:someValuesFrom :GPSModule
+                        ] ,
+                        [ rdf:type owl:Restriction ;
+                          owl:onProperty d3fend:may-contain ;
+                          owl:someValuesFrom :OperatingSystem
+                        ] ,
+                        [ rdf:type owl:Restriction ;
+                          owl:onProperty d3fend:may-contain ;
+                          owl:someValuesFrom :WiFiModule
+                        ] .
+
+
+###  http://www.near.flights/ontologies/dte#TcpConstruct
+:TcpConstruct rdf:type owl:Class ;
+              rdfs:subClassOf :NetworkConstruct .
+
+
+###  http://www.near.flights/ontologies/dte#TcpPort
+:TcpPort rdf:type owl:Class ;
+         rdfs:subClassOf :TcpConstruct .
+
+
+###  http://www.near.flights/ontologies/dte#Telephone
+:Telephone rdf:type owl:Class ;
+           rdfs:subClassOf :PhysicalDevice ,
+                           [ rdf:type owl:Restriction ;
+                             owl:onProperty d3fend:may-contain ;
+                             owl:someValuesFrom :OperatingSystem
+                           ] .
+
+
+###  http://www.near.flights/ontologies/dte#TimeSent
+:TimeSent rdf:type owl:Class ;
+          rdfs:subClassOf :NetworkAnalytics .
+
+
+###  http://www.near.flights/ontologies/dte#Token
+:Token rdf:type owl:Class ;
+       rdfs:subClassOf :UserAuthentication .
+
+
+###  http://www.near.flights/ontologies/dte#TracerouteTracert
+:TracerouteTracert rdf:type owl:Class ;
+                   rdfs:subClassOf :NetworkActivity .
+
+
+###  http://www.near.flights/ontologies/dte#TradeSecret
+:TradeSecret rdf:type owl:Class ;
+             rdfs:subClassOf :SoftwareLicense .
+
+
+###  http://www.near.flights/ontologies/dte#TransportLayerProtocol
+:TransportLayerProtocol rdf:type owl:Class ;
+                        rdfs:subClassOf :Protocol .
+
+
+###  http://www.near.flights/ontologies/dte#UDP
+:UDP rdf:type owl:Class ;
+     rdfs:subClassOf :TransportLayerProtocol ;
+     rdfs:isDefinedBy "https://datatracker.ietf.org/doc/html/rfc768" .
+
+
+###  http://www.near.flights/ontologies/dte#UdpConstruct
+:UdpConstruct rdf:type owl:Class ;
+              rdfs:subClassOf :NetworkConstruct .
+
+
+###  http://www.near.flights/ontologies/dte#UdpPort
+:UdpPort rdf:type owl:Class ;
+         rdfs:subClassOf :UdpConstruct .
+
+
+###  http://www.near.flights/ontologies/dte#Unenctypted_HTTP
+:Unenctypted_HTTP rdf:type owl:Class ;
+                  rdfs:subClassOf :HTTP ,
+                                  [ rdf:type owl:Restriction ;
+                                    owl:onProperty d3fend:contains ;
+                                    owl:someValuesFrom :HttpRequestMethod
+                                  ] .
+
+
+###  http://www.near.flights/ontologies/dte#UniqueID
+:UniqueID rdf:type owl:Class ;
+          rdfs:subClassOf :SoftwareIntegrity .
+
+
+###  http://www.near.flights/ontologies/dte#Url
+:Url rdf:type owl:Class ;
+     rdfs:subClassOf :RoutableAddress .
+
+
+###  http://www.near.flights/ontologies/dte#User
+:User rdf:type owl:Class ;
+      rdfs:subClassOf :DTEThing ,
+                      [ rdf:type owl:Restriction ;
+                        owl:onProperty d3fend:may-access ;
+                        owl:someValuesFrom :Account
+                      ] ,
+                      [ rdf:type owl:Restriction ;
+                        owl:onProperty d3fend:may-modify ;
+                        owl:someValuesFrom :Account
+                      ] ;
+      terms:description "Individual or (system) process authorized to access an information system." ;
+      rdfs:isDefinedBy "https://csrc.nist.gov/glossary/term/user" .
+
+
+###  http://www.near.flights/ontologies/dte#UserAuthentication
+:UserAuthentication rdf:type owl:Class ;
+                    rdfs:subClassOf :SecurityMeasure ,
+                                    [ rdf:type owl:Restriction ;
+                                      owl:onProperty d3fend:authenticates ;
+                                      owl:someValuesFrom :Account
+                                    ] .
+
+
+###  http://www.near.flights/ontologies/dte#UserAuthorization
+:UserAuthorization rdf:type owl:Class ;
+                   rdfs:subClassOf :SecurityMeasure .
+
+
+###  http://www.near.flights/ontologies/dte#UserDeviceAuthorization
+:UserDeviceAuthorization rdf:type owl:Class ;
+                         rdfs:subClassOf :SecurityMeasure .
+
+
+###  http://www.near.flights/ontologies/dte#UserDeviceLocation
+:UserDeviceLocation rdf:type owl:Class ;
+                    rdfs:subClassOf :UserDeviceAuthorization .
+
+
+###  http://www.near.flights/ontologies/dte#VirtualPrivateNetwork
+:VirtualPrivateNetwork rdf:type owl:Class ;
+                       rdfs:subClassOf :PrivateNetwork .
+
+
+###  http://www.near.flights/ontologies/dte#VirtualReality
+:VirtualReality rdf:type owl:Class ;
+                rdfs:subClassOf :HardwareInterfaceDevice .
+
+
+###  http://www.near.flights/ontologies/dte#VirtualRealityControllers
+:VirtualRealityControllers rdf:type owl:Class ;
+                           rdfs:subClassOf :VirtualReality .
+
+
+###  http://www.near.flights/ontologies/dte#VirtualRealityHeadset
+:VirtualRealityHeadset rdf:type owl:Class ;
+                       rdfs:subClassOf :VirtualReality .
+
+
+###  http://www.near.flights/ontologies/dte#VoipTelephone
+:VoipTelephone rdf:type owl:Class ;
+               rdfs:subClassOf :Telephone ,
+                               [ rdf:type owl:Restriction ;
+                                 owl:onProperty d3fend:contains ;
+                                 owl:someValuesFrom :NetworkInterfaceDevice
+                               ] .
+
+
+###  http://www.near.flights/ontologies/dte#VpnClient
+:VpnClient rdf:type owl:Class ;
+           rdfs:subClassOf :VpnRoute .
+
+
+###  http://www.near.flights/ontologies/dte#VpnRoute
+:VpnRoute rdf:type owl:Class ;
+          rdfs:subClassOf :NetworkDescriptor ,
+                          [ rdf:type owl:Restriction ;
+                            owl:onProperty d3fend:contains ;
+                            owl:someValuesFrom :RoutableAddress
+                          ] .
+
+
+###  http://www.near.flights/ontologies/dte#VpnRouter
+:VpnRouter rdf:type owl:Class ;
+           rdfs:subClassOf :VpnRoute .
+
+
+###  http://www.near.flights/ontologies/dte#VpnServer
+:VpnServer rdf:type owl:Class ;
+           rdfs:subClassOf :VpnRoute ,
+                           [ rdf:type owl:Restriction ;
+                             owl:onProperty d3fend:may-be-tactically-associated-with ;
+                             owl:someValuesFrom :VpnClient
+                           ] ,
+                           [ rdf:type owl:Restriction ;
+                             owl:onProperty d3fend:may-be-tactically-associated-with ;
+                             owl:someValuesFrom :VpnRouter
+                           ] .
+
+
+###  http://www.near.flights/ontologies/dte#VxWorks
+:VxWorks rdf:type owl:Class ;
+         rdfs:subClassOf :RealTimeOperatingSystem .
+
+
+###  http://www.near.flights/ontologies/dte#WXXM
+:WXXM rdf:type owl:Class ;
+      rdfs:subClassOf :XML .
+
+
+###  http://www.near.flights/ontologies/dte#WebServer
+:WebServer rdf:type owl:Class ;
+           rdfs:subClassOf :ServerSoftware ,
+                           [ rdf:type owl:Restriction ;
+                             owl:onProperty d3fend:may-produce ;
+                             owl:someValuesFrom :HTTP
+                           ] ,
+                           [ rdf:type owl:Restriction ;
+                             owl:onProperty d3fend:may-produce ;
+                             owl:someValuesFrom :WebSocket
+                           ] .
+
+
+###  http://www.near.flights/ontologies/dte#WebSocket
+:WebSocket rdf:type owl:Class ;
+           rdfs:subClassOf :ApplicationLayerProtocol ;
+           rdfs:isDefinedBy "https://datatracker.ietf.org/doc/html/rfc6455" .
+
+
+###  http://www.near.flights/ontologies/dte#Whirlpool
+:Whirlpool rdf:type owl:Class ;
+           rdfs:subClassOf :HashValue .
+
+
+###  http://www.near.flights/ontologies/dte#WiFi
+:WiFi rdf:type owl:Class ;
+      rdfs:subClassOf :WirelessCommunication .
+
+
+###  http://www.near.flights/ontologies/dte#WiFi1
+:WiFi1 rdf:type owl:Class ;
+       rdfs:subClassOf :WiFi ,
+                       [ rdf:type owl:Restriction ;
+                         owl:onProperty d3fend:uses ;
+                         owl:someValuesFrom :IEEE802.11-1997
+                       ] .
+
+
+###  http://www.near.flights/ontologies/dte#WiFi2
+:WiFi2 rdf:type owl:Class ;
+       rdfs:subClassOf :WiFi ,
+                       [ rdf:type owl:Restriction ;
+                         owl:onProperty d3fend:uses ;
+                         owl:someValuesFrom :IEEE802.11b
+                       ] .
+
+
+###  http://www.near.flights/ontologies/dte#WiFi3
+:WiFi3 rdf:type owl:Class ;
+       rdfs:subClassOf :WiFi ,
+                       [ rdf:type owl:Restriction ;
+                         owl:onProperty d3fend:uses ;
+                         owl:someValuesFrom :IEEE802.11a
+                       ] ,
+                       [ rdf:type owl:Restriction ;
+                         owl:onProperty d3fend:uses ;
+                         owl:someValuesFrom :IEEE802.11g
+                       ] .
+
+
+###  http://www.near.flights/ontologies/dte#WiFi4
+:WiFi4 rdf:type owl:Class ;
+       rdfs:subClassOf :WiFi ,
+                       [ rdf:type owl:Restriction ;
+                         owl:onProperty d3fend:uses ;
+                         owl:someValuesFrom :IEEE802.11n
+                       ] .
+
+
+###  http://www.near.flights/ontologies/dte#WiFi5
+:WiFi5 rdf:type owl:Class ;
+       rdfs:subClassOf :WiFi ,
+                       [ rdf:type owl:Restriction ;
+                         owl:onProperty d3fend:uses ;
+                         owl:someValuesFrom :IEEE802.11ac
+                       ] .
+
+
+###  http://www.near.flights/ontologies/dte#WiFi6
+:WiFi6 rdf:type owl:Class ;
+       rdfs:subClassOf :WiFi ,
+                       [ rdf:type owl:Restriction ;
+                         owl:onProperty d3fend:uses ;
+                         owl:someValuesFrom :IEEE802.11ax
+                       ] .
+
+
+###  http://www.near.flights/ontologies/dte#WiFi6E
+:WiFi6E rdf:type owl:Class ;
+        rdfs:subClassOf :WiFi ,
+                        [ rdf:type owl:Restriction ;
+                          owl:onProperty d3fend:uses ;
+                          owl:someValuesFrom :IEEE802.11ax
+                        ] .
+
+
+###  http://www.near.flights/ontologies/dte#WiFi7
+:WiFi7 rdf:type owl:Class ;
+       rdfs:subClassOf :WiFi ,
+                       [ rdf:type owl:Restriction ;
+                         owl:onProperty d3fend:uses ;
+                         owl:someValuesFrom :IEEE802.11be
+                       ] .
+
+
+###  http://www.near.flights/ontologies/dte#WiFiModule
+:WiFiModule rdf:type owl:Class ;
+            rdfs:subClassOf :NetworkInterfaceDevice ,
+                            :RadioModule ,
+                            [ rdf:type owl:Restriction ;
+                              owl:onProperty d3fend:uses ;
+                              owl:someValuesFrom :WiFi
+                            ] .
+
+
+###  http://www.near.flights/ontologies/dte#WiFiRouter
+:WiFiRouter rdf:type owl:Class ;
+            rdfs:subClassOf :Router ,
+                            [ rdf:type owl:Restriction ;
+                              owl:onProperty d3fend:contains ;
+                              owl:someValuesFrom :WiFiModule
+                            ] .
+
+
+###  http://www.near.flights/ontologies/dte#Windows
+:Windows rdf:type owl:Class ;
+         rdfs:subClassOf :OperatingSystem .
+
+
+###  http://www.near.flights/ontologies/dte#WindowsCE
+:WindowsCE rdf:type owl:Class ;
+           rdfs:subClassOf :Windows .
+
+
+###  http://www.near.flights/ontologies/dte#WirelessCommunication
+:WirelessCommunication rdf:type owl:Class ;
+                       rdfs:subClassOf :NetworkCommunication .
+
+
+###  http://www.near.flights/ontologies/dte#XBeeRadio
+:XBeeRadio rdf:type owl:Class ;
+           rdfs:subClassOf :MeshNetworkRadio .
+
+
+###  http://www.near.flights/ontologies/dte#XML
+:XML rdf:type owl:Class ;
+     rdfs:subClassOf :DataRepresentation .
+
+
+###  http://www.near.flights/ontologies/dte#XMPP
+:XMPP rdf:type owl:Class ;
+      rdfs:subClassOf :ApplicationLayerProtocol ;
+      rdfs:isDefinedBy "https://datatracker.ietf.org/doc/rfc6120/" .
+
+
+###  http://www.near.flights/ontologies/dte#XSD
+:XSD rdf:type owl:Class ;
+     rdfs:subClassOf :XML .
+
+
+###  http://www.near.flights/ontologies/dte#ZigBeeRadio
+:ZigBeeRadio rdf:type owl:Class ;
+             rdfs:subClassOf :MeshNetworkRadio .
+
+
+###  http://www.near.flights/ontologies/dte#iPad
+:iPad rdf:type owl:Class ;
+      rdfs:subClassOf :Tablet ,
+                      [ rdf:type owl:Restriction ;
+                        owl:onProperty d3fend:uses ;
+                        owl:someValuesFrom :iPadOS
+                      ] .
+
+
+###  http://www.near.flights/ontologies/dte#iPadOS
+:iPadOS rdf:type owl:Class ;
+        rdfs:subClassOf :OperatingSystem .
+
+
+###  http://www.near.flights/ontologies/dte#iPhone
+:iPhone rdf:type owl:Class ;
+        rdfs:subClassOf :SmartPhone ,
+                        [ rdf:type owl:Restriction ;
+                          owl:onProperty d3fend:uses ;
+                          owl:someValuesFrom :iPhoneOS
+                        ] .
+
+
+###  http://www.near.flights/ontologies/dte#iPhoneOS
+:iPhoneOS rdf:type owl:Class ;
+          rdfs:subClassOf :OperatingSystem .
+
+
+###  http://www.near.flights/ontologies/dte#2G
+<http://www.near.flights/ontologies/dte#2G> rdf:type owl:Class ;
+                                            rdfs:subClassOf :CellularNetworkCommunication .
+
+
+###  http://www.near.flights/ontologies/dte#3DES
+<http://www.near.flights/ontologies/dte#3DES> rdf:type owl:Class ;
+                                              rdfs:subClassOf :DES .
+
+
+###  http://www.near.flights/ontologies/dte#3G
+<http://www.near.flights/ontologies/dte#3G> rdf:type owl:Class ;
+                                            rdfs:subClassOf :CellularNetworkCommunication .
+
+
+###  http://www.near.flights/ontologies/dte#4G
+<http://www.near.flights/ontologies/dte#4G> rdf:type owl:Class ;
+                                            rdfs:subClassOf :CellularNetworkCommunication .
+
+
+###  http://www.near.flights/ontologies/dte#5G
+<http://www.near.flights/ontologies/dte#5G> rdf:type owl:Class ;
+                                            rdfs:subClassOf :CellularNetworkCommunication .
+
+
+###  http://www.near.flights/ontologies/dte#HTTP/0.9
+<http://www.near.flights/ontologies/dte#HTTP/0.9> rdf:type owl:Class ;
+                                                  rdfs:subClassOf :Unenctypted_HTTP ,
+                                                                  [ rdf:type owl:Restriction ;
+                                                                    owl:onProperty d3fend:uses ;
+                                                                    owl:someValuesFrom :TCP
+                                                                  ] .
+
+
+###  http://www.near.flights/ontologies/dte#HTTP/1.0
+<http://www.near.flights/ontologies/dte#HTTP/1.0> rdf:type owl:Class ;
+                                                  rdfs:subClassOf :Unenctypted_HTTP ,
+                                                                  [ rdf:type owl:Restriction ;
+                                                                    owl:onProperty d3fend:uses ;
+                                                                    owl:someValuesFrom :TCP
+                                                                  ] ;
+                                                  rdfs:isDefinedBy "https://www.ietf.org/rfc/rfc1945.txt" .
+
+
+###  http://www.near.flights/ontologies/dte#HTTP/1.1
+<http://www.near.flights/ontologies/dte#HTTP/1.1> rdf:type owl:Class ;
+                                                  rdfs:subClassOf :Unenctypted_HTTP ,
+                                                                  [ rdf:type owl:Restriction ;
+                                                                    owl:onProperty d3fend:uses ;
+                                                                    owl:someValuesFrom :TCP
+                                                                  ] ;
+                                                  rdfs:isDefinedBy "https://www.ietf.org/rfc/rfc2616.txt" .
+
+
+###  http://www.near.flights/ontologies/dte#HTTP/2
+<http://www.near.flights/ontologies/dte#HTTP/2> rdf:type owl:Class ;
+                                                rdfs:subClassOf :Unenctypted_HTTP ,
+                                                                [ rdf:type owl:Restriction ;
+                                                                  owl:onProperty d3fend:uses ;
+                                                                  owl:someValuesFrom :TCP
+                                                                ] ;
+                                                rdfs:isDefinedBy "https://datatracker.ietf.org/doc/html/rfc7540" .
+
+
+###  http://www.near.flights/ontologies/dte#HTTP/3
+<http://www.near.flights/ontologies/dte#HTTP/3> rdf:type owl:Class ;
+                                                rdfs:subClassOf :Unenctypted_HTTP ,
+                                                                [ rdf:type owl:Restriction ;
+                                                                  owl:onProperty d3fend:uses ;
+                                                                  owl:someValuesFrom :QUIC
+                                                                ] ;
+                                                rdfs:isDefinedBy "https://datatracker.ietf.org/doc/rfc9114/" .
+
+
+###  http://www.near.flights/ontologies/dte#IBM_z/OS
+<http://www.near.flights/ontologies/dte#IBM_z/OS> rdf:type owl:Class ;
+                                                  rdfs:subClassOf :OperatingSystem .
+
+
+#################################################################
+#    General axioms
+#################################################################
+
+[ rdf:type owl:AllDisjointClasses ;
+  owl:members ( d3fend:T1021.004
+                d3fend:T1071.004
+                :NTP
+                :PTP
+                :RTP
+                :RTSP
+                :SSL
+                :TLS
+              )
+] .
+
+
+[ rdf:type owl:AllDisjointClasses ;
+  owl:members ( :AES
+                :DSA
+                :ECDSA
+                :RCA
+                :RSA
+                <http://www.near.flights/ontologies/dte#3DES>
+              )
+] .
+
+
+[ rdf:type owl:AllDisjointClasses ;
+  owl:members ( :AIXM
+                :FIXM
+                :WXXM
+                :XML
+              )
+] .
+
+
+[ rdf:type owl:AllDisjointClasses ;
+  owl:members ( :AMQP
+                :ActiveMQ
+                :Arp
+                :HTTP
+                :ICMP
+                :JavaMessagingService
+                :MQTT
+                :MailProtocol
+                :OpenWire
+                :QUIC
+                :SMTP
+                :SOAP
+                :STOMP
+                :TCP
+                :UDP
+                :WebSocket
+                :XMPP
+              )
+] .
+
+
+[ rdf:type owl:AllDisjointClasses ;
+  owl:members ( :AMQP
+                :HTTP
+                :ICMP
+                :IMAP
+                :JavaMessagingService
+                :POP
+                :SMTP
+                :TCP
+                :UDP
+                :WebSocket
+                :XMPP
+              )
+] .
+
+
+[ rdf:type owl:AllDisjointClasses ;
+  owl:members ( :AccessControlList
+                :Account
+                :AccountRoles
+              )
+] .
+
+
+[ rdf:type owl:AllDisjointClasses ;
+  owl:members ( :ActiveSession
+                :IdentifyAwareProxy
+                :VirtualPrivateNetwork
+              )
+] .
+
+
+[ rdf:type owl:AllDisjointClasses ;
+  owl:members ( :AdministratorAccount
+                :GuestAccount
+                :LocalAccount
+                :ServiceAccount
+              )
+] .
+
+
+[ rdf:type owl:AllDisjointClasses ;
+  owl:members ( :ApacheLicense
+                :BSDLicense
+                :IntelOpenSourceLicense
+                :MITLicense
+                :PythonLicense
+              )
+] .
+
+
+[ rdf:type owl:AllDisjointClasses ;
+  owl:members ( :Application
+                :Data
+                :Network
+                :User
+              )
+] .
+
+
+[ rdf:type owl:AllDisjointClasses ;
+  owl:members ( :BLAKE2
+                :BLAKE3
+                :MD5
+                :RIPEMD-160
+                :SHA-1
+                :SHA-2
+                :SHA-3
+                :Whirlpool
+              )
+] .
+
+
+[ rdf:type owl:AllDisjointClasses ;
+  owl:members ( :BandwidthUsage
+                :Url
+                :VpnClient
+                :VpnRouter
+                :VpnServer
+              )
+] .
+
+
+[ rdf:type owl:AllDisjointClasses ;
+  owl:members ( :Biometrics
+                :IdCard
+                :PIN
+                :Password
+                :Token
+              )
+] .
+
+
+[ rdf:type owl:AllDisjointClasses ;
+  owl:members ( :CONNECT
+                :DELETE
+                :GET
+                :HEAD
+                :OPTIONS
+                :PATCH
+                :POST
+                :PUT
+                :TRACE
+              )
+] .
+
+
+[ rdf:type owl:AllDisjointClasses ;
+  owl:members ( :CommonPublicLicense
+                :CreativeCommonLicense
+                :EclipsePublicLicense
+                :GPL
+                :IBMPublicLicense
+                :LGPL
+                :MozillaPublicLicense
+              )
+] .
+
+
+[ rdf:type owl:AllDisjointClasses ;
+  owl:members ( :Copyleft
+                :Noncommercial
+                :PermissiveSoftwareLicense
+                :PropietaryLicense
+                :PublicDomain
+                :TradeSecret
+              )
+] .
+
+
+[ rdf:type owl:AllDisjointClasses ;
+  owl:members ( :DCCP
+                :QUIC
+                :RSVP
+                :SCTP
+                :TCP
+                :UDP
+              )
+] .
+
+
+[ rdf:type owl:AllDisjointClasses ;
+  owl:members ( :DELETE
+                :GET
+                :POST
+                :PUT
+              )
+] .
+
+
+[ rdf:type owl:AllDisjointClasses ;
+  owl:members ( :DataAuthorization
+                :DigitalCertificate
+                :Encryption
+                :HashValue
+                :SoftwareTestReport
+                :UniqueID
+              )
+] .
+
+
+[ rdf:type owl:AllDisjointClasses ;
+  owl:members ( :Diffie-Hellman
+                :ECDH
+                :PSK
+                :RSA
+              )
+] .
+
+
+[ rdf:type owl:AllDisjointClasses ;
+  owl:members ( :ECN
+                :ICMP
+                :IGMP
+                :IPsec
+                :IpProtocol
+                :NDP
+              )
+] .
+
+
+[ rdf:type owl:AllDisjointClasses ;
+  owl:members ( :FreeBSD
+                :Linux
+                :MacOS
+                :Windows
+              )
+] .
+
+
+[ rdf:type owl:AllDisjointClasses ;
+  owl:members ( :GPLv1
+                :GPLv2
+                :GPLv3
+              )
+] .
+
+
+[ rdf:type owl:AllDisjointClasses ;
+  owl:members ( :IEEE802.11-1997
+                :IEEE802.11a
+                :IEEE802.11ac
+                :IEEE802.11ad
+                :IEEE802.11af
+                :IEEE802.11aj
+                :IEEE802.11ax
+                :IEEE802.11ay
+                :IEEE802.11b
+                :IEEE802.11bb
+                :IEEE802.11bd
+                :IEEE802.11be
+                :IEEE802.11g
+                :IEEE802.11j
+                :IEEE802.11n
+                :IEEE802.11p
+                :IEEE802.11y
+              )
+] .
+
+
+[ rdf:type owl:AllDisjointClasses ;
+  owl:members ( :OS_Patch_Level
+                :OS_Type
+                :OS_Version
+              )
+] .
+
+
+[ rdf:type owl:AllDisjointClasses ;
+  owl:members ( :SHA-224
+                :SHA-256
+                :SHA-512
+              )
+] .
+
+
+[ rdf:type owl:AllDisjointClasses ;
+  owl:members ( :SHA3-224
+                :SHA3-256
+                :SHA3-384
+                :SHA3-512
+                :SHAKE128
+                :SHAKE256
+              )
+] .
+
+
+[ rdf:type owl:AllDisjointClasses ;
+  owl:members ( :TLSv1.0
+                :TLSv1.2
+                :TLSv1.3
+              )
+] .
+
+
+[ rdf:type owl:AllDisjointClasses ;
+  owl:members ( :UserAuthentication
+                :UserAuthorization
+                :UserDeviceAuthorization
+              )
+] .
+
+
+[ rdf:type owl:AllDisjointClasses ;
+  owl:members ( :WiFi1
+                :WiFi2
+                :WiFi3
+                :WiFi4
+                :WiFi6
+                :WiFi6E
+                :WiFi7
+              )
+] .
+
+
+[ rdf:type owl:AllDisjointClasses ;
+  owl:members ( <http://www.near.flights/ontologies/dte#2G>
+                <http://www.near.flights/ontologies/dte#3G>
+                <http://www.near.flights/ontologies/dte#4G>
+                <http://www.near.flights/ontologies/dte#5G>
+              )
+] .
+
+
+###  Generated by the OWL API (version 4.5.25.2023-02-15T19:15:49Z) https://github.com/owlcs/owlapi
